@@ -1,5 +1,6 @@
 package advancedweb.project.welfareservice.application.dto.response;
 
+import advancedweb.project.welfareservice.domain.entity.Welfare;
 import advancedweb.project.welfareservice.domain.entity.enums.Area;
 import advancedweb.project.welfareservice.domain.entity.enums.Target;
 
@@ -17,4 +18,19 @@ public record WelfareDetailRes(
         String tel,     // 전화 문의
         String referenceLink,    // 관련 웹사이트
         String reference    // 근거 법령 및 자료
-) {}
+) {
+    public static WelfareDetailRes create(Welfare welfare) {
+        return new WelfareDetailRes(
+                welfare.getSummary().getName(),
+                LocalDateTime.now(),
+                welfare.getSummary().getAreas(),
+                welfare.getSummary().getTargets(),
+                welfare.getDetail().getCriteria(),
+                welfare.getDetail().getContent(),
+                welfare.getDetail().getApplyMethod(),
+                welfare.getDetail().getTel(),
+                welfare.getDetail().getReferenceLink(),
+                welfare.getDetail().getReference()
+        );
+    }
+}

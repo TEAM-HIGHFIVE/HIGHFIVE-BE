@@ -16,7 +16,7 @@ public class WelfareManagementUseCase {
 
 
     // Method
-    public Page<WelfareSummaryRes> search(Area area, Target target, String userNo) {
+    public Page<WelfareSummaryRes> search(Area area, Target target, String question) {
         return null;
     }
 

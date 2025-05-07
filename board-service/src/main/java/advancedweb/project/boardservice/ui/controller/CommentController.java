@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/{postNo}")
+@RequestMapping("/api/board")
 public class CommentController {
 
     private final CommentManagementUseCase commentManagementUseCase;
@@ -20,7 +20,7 @@ public class CommentController {
     /**
      *  댓글 작성 API
      */
-    @PostMapping
+    @PostMapping("/{postNo}")
     @CheckAuthorization
     public BaseResponse<Void> write(@PathVariable String postNo,
                                     @RequestBody WriteCmtReq request,
@@ -34,10 +34,9 @@ public class CommentController {
      */
     @DeleteMapping("/{commentNo}")
     @CheckAuthorization
-    public BaseResponse<Void> delete(@PathVariable String postNo,
-                                     @PathVariable String commentNo,
+    public BaseResponse<Void> delete(@PathVariable String commentNo,
                                      @CurrentUser @Parameter(hidden = true) String userNo) {
-        commentManagementUseCase.delete(postNo, commentNo, userNo);
+        commentManagementUseCase.delete(commentNo, userNo);
         return BaseResponse.onSuccess();
     }
 }

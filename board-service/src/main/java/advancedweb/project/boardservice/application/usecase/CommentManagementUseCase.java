@@ -16,7 +16,7 @@ public class CommentManagementUseCase {
 
     }
 
-    public void delete(String postNo, String commentNo, String userNo) {
+    public void delete(String commentNo, String userNo) {
 
     }
 }

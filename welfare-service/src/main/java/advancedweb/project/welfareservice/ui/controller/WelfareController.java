@@ -7,9 +7,7 @@ import advancedweb.project.welfareservice.application.usecase.WelfareManagementU
 import advancedweb.project.welfareservice.domain.entity.enums.Area;
 import advancedweb.project.welfareservice.domain.entity.enums.Target;
 import advancedweb.project.welfareservice.global.annotation.CheckAuthorization;
-import advancedweb.project.welfareservice.global.annotation.CurrentUser;
 import advancedweb.project.welfareservice.global.response.BaseResponse;
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -33,14 +31,13 @@ public class WelfareController {
     @CheckAuthorization
     public BaseResponse<Page<WelfareSummaryRes>> searchWelfare(@RequestParam Area area,
                                                                @RequestParam Target target,
-                                                               @CurrentUser @Parameter(hidden = true) String userNo) {
-        return BaseResponse.onSuccess(welfareManagementUseCase.search(area, target, userNo));
+                                                               @RequestParam String question) {
+        return BaseResponse.onSuccess(welfareManagementUseCase.search(area, target, question));
     }
 
     /**
      *  복지 상세 조회 API
      *  PK를 기준으로 상세 조회
-     *  조회시 해당 복지의 조회 수 증가 (동시성 이슈)
      */
     @GetMapping("/{welfareNo}")
     @CheckAuthorization
