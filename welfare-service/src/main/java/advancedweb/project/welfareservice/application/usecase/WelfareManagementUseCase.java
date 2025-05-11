@@ -63,4 +63,14 @@ public class WelfareManagementUseCase {
 
         return WelfareDetailRes.create(welfare);
     }
+
+    // TODO: 캐싱 서비스와 연동
+    public List<WelfareSummaryRes> readRecentWelfare(int amount) {
+
+        // 캐시 서버에 최근 조회한 복지 서비스 조회 요청. amount 수만큼 받아옴
+
+
+
+        return List.of();
+    }
 }

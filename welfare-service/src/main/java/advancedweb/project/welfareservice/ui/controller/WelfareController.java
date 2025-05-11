@@ -13,6 +13,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/welfare")
@@ -49,6 +51,10 @@ public class WelfareController {
      * 최근 조회한 복지 서비스 조회 API
      */
     @GetMapping("/recent")
+    @CheckAuthorization
+    public BaseResponse<List<WelfareSummaryRes>> readRecentWelfare(@RequestParam(defaultValue = "5") int amount) {
+        return BaseResponse.onSuccess(welfareManagementUseCase.readRecentWelfare(amount));
+    }
 
     /**
      *  상세 조회 페이지 내에서 원본 파일 다운로드 API
