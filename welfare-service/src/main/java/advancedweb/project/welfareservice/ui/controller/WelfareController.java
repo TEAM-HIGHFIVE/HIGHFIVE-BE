@@ -28,7 +28,7 @@ public class WelfareController {
      *  필터링 기준은 Enum으로 두 항목을 선언하여 RequestParam으로 필터링
      */
     @GetMapping
-    @CheckAuthorization
+//    @CheckAuthorization
     public BaseResponse<Page<WelfareSummaryRes>> searchWelfare(@RequestParam Area area,
                                                                @RequestParam Target target,
                                                                @RequestParam String question) {
