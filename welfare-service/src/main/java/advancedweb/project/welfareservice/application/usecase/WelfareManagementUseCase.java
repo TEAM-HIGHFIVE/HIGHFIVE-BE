@@ -6,19 +6,14 @@ import advancedweb.project.welfareservice.application.dto.response.WelfareSummar
 import advancedweb.project.welfareservice.domain.entity.Welfare;
 import advancedweb.project.welfareservice.domain.entity.enums.Area;
 import advancedweb.project.welfareservice.domain.entity.enums.Target;
-import advancedweb.project.welfareservice.domain.repository.WelfareRepository;
 import advancedweb.project.welfareservice.domain.service.WelfareService;
 import advancedweb.project.welfareservice.infra.client.AIFeignClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +52,15 @@ public class WelfareManagementUseCase {
         return null;
     }
 
+    // TODO: 캐싱 서비스와 연동
     public WelfareDetailRes read(String welfareNo) {
-        return null;
+        // 캐시에 있는지 확인
+
+        // 없으면 데이터베이스에서 조회
+        Welfare welfare = welfareService.findByWelfareNo(welfareNo);
+
+        // 캐시에 해당 welfare 저장
+
+        return WelfareDetailRes.create(welfare);
     }
 }

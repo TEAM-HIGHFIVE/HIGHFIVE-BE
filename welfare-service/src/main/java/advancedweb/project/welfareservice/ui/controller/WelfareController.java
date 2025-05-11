@@ -40,10 +40,15 @@ public class WelfareController {
      *  PK를 기준으로 상세 조회
      */
     @GetMapping("/{welfareNo}")
-    @CheckAuthorization
+//    @CheckAuthorization
     public BaseResponse<WelfareDetailRes> readWelfare(@PathVariable String welfareNo) {
         return BaseResponse.onSuccess(welfareManagementUseCase.read(welfareNo));
     }
+
+    /**
+     * 최근 조회한 복지 서비스 조회 API
+     */
+    @GetMapping("/recent")
 
     /**
      *  상세 조회 페이지 내에서 원본 파일 다운로드 API
