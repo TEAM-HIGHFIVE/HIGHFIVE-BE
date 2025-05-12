@@ -1,6 +1,7 @@
 package advancedweb.project.boardservice.application.usecase;
 
 import advancedweb.project.boardservice.application.dto.request.WriteCmtReq;
+import advancedweb.project.boardservice.domain.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,15 +9,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CommentManagementUseCase {
 
-    // DI
+    private final CommentService commentService;
 
-
-    // Method
     public void write(String postNo, WriteCmtReq request, String userNo) {
-
-    }
-
-    public void delete(String commentNo, String userNo) {
-
+        commentService.write(postNo, request, userNo);
     }
 }
