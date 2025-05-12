@@ -67,12 +67,14 @@ public class WelfareController {
      *  welfare PK 기준으로 파일을 찾아서 URI 전송
      */
     @GetMapping("/download/{welfareNo}")
-    @CheckAuthorization
+//    @CheckAuthorization
     public ResponseEntity<Resource> downloadFile(@PathVariable String welfareNo) {
         DownloadFileRes downloadFileRes = fileStorageUseCase.download(welfareNo);
 
         String fileName = downloadFileRes.filename();
-        String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8); // 한글 파일명: 인코딩 필요
+
+        String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8) // 한글 파일명: 인코딩 필요
+                .replaceAll("\\+", "%20"); // 파일명의 띄어쓰기가 +로 표시되는 부분 해결
         Resource resource = downloadFileRes.resource();
 
         return ResponseEntity.ok()
