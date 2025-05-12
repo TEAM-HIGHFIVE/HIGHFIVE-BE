@@ -1,5 +1,6 @@
 package advancedweb.project.welfareservice.ui.controller;
 
+import advancedweb.project.welfareservice.application.dto.response.DownloadFileRes;
 import advancedweb.project.welfareservice.application.dto.response.WelfareDetailRes;
 import advancedweb.project.welfareservice.application.dto.response.WelfareSummaryRes;
 import advancedweb.project.welfareservice.application.usecase.FileStorageUseCase;
@@ -11,8 +12,13 @@ import advancedweb.project.welfareservice.global.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -42,7 +48,7 @@ public class WelfareController {
      *  PK를 기준으로 상세 조회
      */
     @GetMapping("/{welfareNo}")
-//    @CheckAuthorization
+    @CheckAuthorization
     public BaseResponse<WelfareDetailRes> readWelfare(@PathVariable String welfareNo) {
         return BaseResponse.onSuccess(welfareManagementUseCase.read(welfareNo));
     }
@@ -60,9 +66,18 @@ public class WelfareController {
      *  상세 조회 페이지 내에서 원본 파일 다운로드 API
      *  welfare PK 기준으로 파일을 찾아서 URI 전송
      */
-    @PostMapping("/download/{welfareNo}")
+    @GetMapping("/download/{welfareNo}")
     @CheckAuthorization
-    public BaseResponse<Resource> downloadWelfareFile(@PathVariable String welfareNo) {
-        return BaseResponse.onSuccess(fileStorageUseCase.download(welfareNo));
+    public ResponseEntity<Resource> downloadFile(@PathVariable String welfareNo) {
+        DownloadFileRes downloadFileRes = fileStorageUseCase.download(welfareNo);
+
+        String fileName = downloadFileRes.filename();
+        String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8); // 한글 파일명: 인코딩 필요
+        Resource resource = downloadFileRes.resource();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedFileName)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 }
