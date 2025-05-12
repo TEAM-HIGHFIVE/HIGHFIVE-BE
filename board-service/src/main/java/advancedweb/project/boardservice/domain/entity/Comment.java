@@ -1,32 +1,31 @@
 package advancedweb.project.boardservice.domain.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
-@Document(collection = "comments") // MongoDB 컬렉션 이름 지정
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Document(collection = "comments")
 public class Comment {
 
     @Id
-    private String id;
+    private String commentNo;
 
+    @Field("post_no")
     private String postNo;
+
+    @Field("user_no")
     private String userNo;
+
+    @Field("content")
     private String content;
 
+    @Field("created_at")
     private LocalDateTime createdAt;
-
-    @Builder
-    public Comment(String postNo, String userNo, String content, LocalDateTime createdAt) {
-        this.postNo = postNo;
-        this.userNo = userNo;
-        this.content = content;
-        this.createdAt = createdAt;
-    }
 }
