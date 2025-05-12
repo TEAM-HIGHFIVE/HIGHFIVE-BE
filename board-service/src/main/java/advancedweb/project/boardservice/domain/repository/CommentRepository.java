@@ -4,7 +4,9 @@ import advancedweb.project.boardservice.domain.entity.Comment;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CommentRepository extends MongoRepository<Comment, String> {
-    // 필요시, 게시글 ID로 댓글 조회하는 쿼리 등 추가 가능
+    List<Comment> findByPostNo(String postNo);
 }
