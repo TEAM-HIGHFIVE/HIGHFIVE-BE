@@ -6,14 +6,16 @@ public record RecommendReq(
         String target,
         String criteria,
         String content,
-        String applyMethod
+        String applyMethod,
+        String question
 ) {
-    public static RecommendReq create(Welfare welfare) {
+    public static RecommendReq create(Welfare welfare, String question) {
         return new RecommendReq(
                 welfare.getDetail().getTarget(),
                 welfare.getDetail().getCriteria(),
                 welfare.getDetail().getContent(),
-                welfare.getDetail().getApplyMethod()
+                welfare.getDetail().getApplyMethod(),
+                question
         );
     }
 }
