@@ -1,14 +1,17 @@
 package advancedweb.project.boardservice.ui.controller;
 
 import advancedweb.project.boardservice.application.dto.request.WriteCmtReq;
+import advancedweb.project.boardservice.application.dto.response.ReadCmtRes;
+import advancedweb.project.boardservice.application.dto.response.WriteCmtRes;
 import advancedweb.project.boardservice.application.usecase.CommentManagementUseCase;
 import advancedweb.project.boardservice.global.annotation.CheckAuthorization;
 import advancedweb.project.boardservice.global.annotation.CurrentUser;
 import advancedweb.project.boardservice.global.response.BaseResponse;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,26 +20,24 @@ public class CommentController {
 
     private final CommentManagementUseCase commentManagementUseCase;
 
-    /**
-     *  댓글 작성 API
-     */
     @PostMapping("/{postNo}")
     @CheckAuthorization
-    public BaseResponse<Void> write(@PathVariable String postNo,
-                                    @RequestBody WriteCmtReq request,
-                                    @CurrentUser @Parameter(hidden = true) String userNo) {
-        commentManagementUseCase.write(postNo, request, userNo);
-        return BaseResponse.onSuccess();
+    public BaseResponse<WriteCmtRes> write(@PathVariable String postNo,
+                                           @RequestBody WriteCmtReq request,
+                                           @CurrentUser @Parameter(hidden = true) String userNo) {
+        return BaseResponse.onSuccess(commentManagementUseCase.write(postNo, request, userNo));
     }
 
-    /**
-     *  댓글 삭제 API
-     */
     @DeleteMapping("/{commentNo}")
     @CheckAuthorization
     public BaseResponse<Void> delete(@PathVariable String commentNo,
                                      @CurrentUser @Parameter(hidden = true) String userNo) {
         commentManagementUseCase.delete(commentNo, userNo);
         return BaseResponse.onSuccess();
+    }
+
+    @GetMapping("/{postNo}/comments")
+    public BaseResponse<List<ReadCmtRes>> getComments(@PathVariable String postNo) {
+        return BaseResponse.onSuccess(commentManagementUseCase.getComments(postNo));
     }
 }
