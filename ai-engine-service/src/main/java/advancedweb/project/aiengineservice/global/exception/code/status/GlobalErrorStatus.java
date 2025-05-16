@@ -20,6 +20,7 @@ public enum GlobalErrorStatus implements BaseCodeInterface {
     _EXIST_ENTITY(HttpStatus.BAD_REQUEST, "COMMON400", "이미 존재하는 요청입니다."),
     _EXIST_USERNAME(HttpStatus.BAD_REQUEST, "COMMON400", "이미 사용중인 아이디입니다."),
     _TOO_MANY_REQUEST(HttpStatus.TOO_MANY_REQUESTS, "COMMON429", "요청이 너무 많습니다. 잠시 후 다시 시도해 주세요."),
+    _PARSING_ERROR(HttpStatus.BAD_REQUEST, "COMMON400", "파싱 과정에 문제가 발생했습니다."),
 
     // S3 관련 에러
     _S3_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S3_5001", "파일 업로드에 실패했습니다."),
