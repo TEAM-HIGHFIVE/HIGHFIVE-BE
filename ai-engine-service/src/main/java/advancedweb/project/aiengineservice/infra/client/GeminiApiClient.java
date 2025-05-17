@@ -12,7 +12,6 @@ import java.util.Map;
         url = "https://generativelanguage.googleapis.com/v1beta/models"
 )
 public interface GeminiApiClient {
-
     @PostMapping("/gemini-1.5-flash-latest:generateContent")
     Map<String, Object> generateContent(
             @RequestParam("key") String apiKey,

@@ -21,24 +21,6 @@ public class GeminiRecommendController {
     //DI
     private final RecommendWelfareUseCase recommendWelfareUseCase;
 
-    /**
-     * POST /api/ai/recommend
-     * {
-     *   "rawUserInput": "...",
-     *   "welfarePKs": [101,207,312],
-     *   "supportTarget": "...",
-     *   "welfareTitle": "...",
-     *   "selectionCriteria": "...",
-     *   "applyMethod": "..."
-     * }
-     *
-     * → { "recommendedPKs": [207,312] }
-     */
-    /**
-     * 근데 이렇게 받는것 보다  DTO 리스트를 더 낫지 않나?
-     * @param req
-     * @return
-     */
     @PostMapping("/recommend")
     public ResponseEntity<AiRecommendResponse> recommend(
             @RequestBody AiRecommendRequest req

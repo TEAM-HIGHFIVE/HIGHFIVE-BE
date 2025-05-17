@@ -2,11 +2,14 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/advanced-web.project.board-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/advanced-web.project.board-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/advanced-web.project.user-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/advanced-web.project.user-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ai-engine-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ai-engine-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/api-gateway.main.iml" filepath="$PROJECT_DIR$/.idea/modules/api-gateway.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/board-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/board-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/data-collector.main.iml" filepath="$PROJECT_DIR$/.idea/modules/data-collector.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/project.iml" filepath="$PROJECT_DIR$/.idea/project.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/user-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/user-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/user-service.iml" filepath="$PROJECT_DIR$/.idea/modules/user-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/user-service.test.iml" filepath="$PROJECT_DIR$/.idea/modules/user-service.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/welfare-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/welfare-service.main.iml" />
     </modules>
   </component>

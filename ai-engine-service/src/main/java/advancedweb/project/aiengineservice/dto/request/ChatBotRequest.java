@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatBotRequest {
-    private Long CurrentWelfarePk;
-    private String CurrentWelfareName;
+    private String currentWelfarePk;
+    private String currentWelfareName;
     private String supportTarget;
     private String selectionCriteria;
-    private String WelfareContent;
+    private String welfareContent;
     private String applicationMethod;
-    private String question;
+    private String userQuestion;
 }

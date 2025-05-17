@@ -15,6 +15,6 @@ public class ChatBotUseCase {
     private final GeminiService geminiService;
 
     public ChatBotResponse chat(ChatBotRequest req){
-        return new ChatBotResponse(geminiService.generateReply(req));
+        return new ChatBotResponse(geminiService.chatReply(req));
     }
 }
