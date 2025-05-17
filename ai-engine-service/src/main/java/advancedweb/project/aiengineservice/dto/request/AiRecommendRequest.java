@@ -2,7 +2,6 @@ package advancedweb.project.aiengineservice.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -16,6 +15,6 @@ import java.util.List;
  */
 public class AiRecommendRequest {
     private String rawUserInput;
-    private List<Welfare> welfareList;
+    private List<WelfareItem> welfareItemList;
 }
 

@@ -7,12 +7,10 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.36/5a30490a6e14977d97d9c73c924c1f1b5311ea95/lombok-1.18.36.jar" />
         </processorPath>
-        <module name="advanced-web.project.board-service.main" />
+        <module name="welfare-service.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="board-service.main" target="17" />
-      <module name="board-service.test" target="17" />
       <module name="consumer-service" target="17" />
       <module name="consumer-service.main" target="17" />
       <module name="consumer-service.test" target="17" />
@@ -22,6 +20,9 @@
       <module name="test-service" target="17" />
       <module name="test-service.main" target="17" />
       <module name="test-service.test" target="17" />
+      <module name="user-service" target="17" />
+      <module name="user-service.main" target="17" />
+      <module name="user-service.test" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

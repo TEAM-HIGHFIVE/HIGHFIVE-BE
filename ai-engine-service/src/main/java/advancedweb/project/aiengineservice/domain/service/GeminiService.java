@@ -1,7 +1,7 @@
 package advancedweb.project.aiengineservice.domain.service;
 
-import advancedweb.project.aiengineservice.domain.processor.GeminiResponseProcessor;
 import advancedweb.project.aiengineservice.dto.request.AiRecommendRequest;
+import advancedweb.project.aiengineservice.dto.request.ChatBotRequest;
 import advancedweb.project.aiengineservice.global.exception.RestApiException;
 import advancedweb.project.aiengineservice.infra.client.GeminiApiClient;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,17 +25,8 @@ public class GeminiService {
      */
 
     private final GeminiApiClient geminiApiClient;
-    private final GeminiResponseProcessor processor;
 
-    @Value("${GEMINI_API_KEY:AIzaSyDOubo_biqXtT6fZYTF5mNEPZ0xQHDO6cc}") private String geminiKey;
-
-    //model URL
-    @Value("${gemini.api.url:https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent}")
-    private String apiUrl;
-
-    //사용할 Gemini 모델 이름
-    @Value("${gemini.api.model:gemini-1.5-pro-latest}")
-    private String modelName;
+    @Value("${GEMINI_API_KEY}") private String geminiKey;
 
     /**
      *
@@ -46,25 +36,44 @@ public class GeminiService {
      */
     public List<String> requestRecommendation(AiRecommendRequest req){
         // 프롬프트 생성
-        String prompt = buildPrompt(req);
-
-        // 최종 gemini 호출 URL
-        String fullUrl = apiUrl + "?key=" + geminiKey;
-
-        Map<String, Object> body = Map.of(
-                "contents", List.of(
-                        Map.of("parts", List.of(Map.of("text", prompt)))
-                )
-        );
-
+        String prompt = buildRecommendPrompt(req);
         try {
-            return extractStringListFromRawResponse(geminiApiClient.generateContent(geminiKey, body));
+            return extractStringListFromRawResponse(geminiApiClient.generateContent(
+                    geminiKey, Map.of(
+                            "contents", List.of(
+                                    Map.of("parts",
+                                            List.of(Map.of("text", prompt)))
+                            )
+                    )
+            ));
         } catch (IOException e) {
             throw new RestApiException(_PARSING_ERROR);
         }
     }
 
-    public List<String> extractStringListFromRawResponse(Map<String, Object> rawResponse) throws IOException {
+    public String chatReply(ChatBotRequest req) {
+        System.out.println("req = " + req);
+        String prompt = buildChatBotPrompt(req);
+
+        try {
+            Map<String, Object> rawResponse = geminiApiClient.generateContent(
+                    geminiKey,
+                    Map.of("contents",
+                            List.of(Map.of("parts", List.of(Map.of("text", prompt))))
+                    )
+            );
+            return extractChatReplyFromRawResponse(rawResponse);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RestApiException(_PARSING_ERROR);
+        }
+    }
+
+    /**
+     *  Private Method
+     */
+    private List<String> extractStringListFromRawResponse(Map<String, Object> rawResponse) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
         // 2. 깊게 들어가서 텍스트 추출
@@ -83,8 +92,19 @@ public class GeminiService {
         return parsed.stream().map(String::valueOf).toList();
     }
 
-    private String buildPrompt(AiRecommendRequest req) {
-        String welfareDescriptions = req.getWelfareList().stream()
+    private String extractChatReplyFromRawResponse(Map<String, Object> rawResponse) {
+        // candidates → 첫번째 element → content → parts[0] → text
+        List<Object> candidates = (List<Object>) rawResponse.get("candidates");
+        Map<String, Object> firstCandidate = (Map<String, Object>) candidates.get(0);
+        Map<String, Object> content       = (Map<String, Object>) firstCandidate.get("content");
+        List<Object> parts                = (List<Object>) content.get("parts");
+        Map<String, Object> part0         = (Map<String, Object>) parts.get(0);
+
+        return ((String) part0.get("text")).trim();
+    }
+
+    private String buildRecommendPrompt(AiRecommendRequest req) {
+        String welfareDescriptions = req.getWelfareItemList().stream()
                 .map(w -> String.format(
                         "• ID: %s\n" +
                                 "  지원 대상: %s\n" +
@@ -108,5 +128,32 @@ public class GeminiService {
                 welfareDescriptions
         );
     }
+    public String buildChatBotPrompt(ChatBotRequest req) {
+    // 복지 서비스 정보를 문자열로 포맷팅
+        String serviceInfo = String.format(
+                "• ID: %s\n" +
+                        "  서비스명: %s\n" +
+                        "  지원 대상: %s\n" +
+                        "  선정 기준: %s\n" +
+                        "  서비스 내용: %s\n" +
+                        "  신청 방법: %s",
+                req.getCurrentWelfarePk(),
+                req.getCurrentWelfareName(),
+                req.getSupportTarget(),
+                req.getSelectionCriteria(),
+                req.getWelfareContent(),
+                req.getApplicationMethod()
+        );
 
+        // 최종 프롬프트 조립
+        return String.format(
+                "다음 복지 서비스 정보를 참고하여 사용자 질문에 대해 친절하고 구체적으로 300자 이내로 답변해주세요.\n\n" +
+                        "=== 복지 서비스 정보 ===\n" +
+                        "%s\n\n" +
+                        "=== 사용자 질문 ===\n" +
+                        "\"%s\"\n\n" +
+                        "답변:",
+                serviceInfo,
+                req.getUserQuestion());
+    };
 }
