@@ -14,7 +14,7 @@ public record CommentRes (
         return new CommentRes(
                 comment.getCommentNo(),
                 comment.getContent(),
-                userNo.equals(comment.getWriterNo()),
+                userNo.equals(comment.getUserNo()),
                 comment.getCreatedAt()
         );
     }
