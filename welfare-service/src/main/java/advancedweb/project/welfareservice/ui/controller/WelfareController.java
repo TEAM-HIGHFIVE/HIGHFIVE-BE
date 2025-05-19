@@ -50,7 +50,7 @@ public class WelfareController {
      *  필터링 기준은 Enum으로 두 항목을 선언하여 RequestParam으로 필터링
      */
     @GetMapping
-//    @CheckAuthorization
+    @CheckAuthorization
     public BaseResponse<Page<WelfareSummaryRes>> searchWelfare(@RequestParam Area area,
                                                                @RequestParam Target target,
                                                                @RequestParam String question,
@@ -83,7 +83,7 @@ public class WelfareController {
      *  welfare PK 기준으로 파일을 찾아서 URI 전송
      */
     @GetMapping("/download/{welfareNo}")
-//    @CheckAuthorization
+    @CheckAuthorization
     public ResponseEntity<Resource> downloadFile(@PathVariable String welfareNo) {
         DownloadFileRes downloadFileRes = fileStorageUseCase.download(welfareNo);
 
